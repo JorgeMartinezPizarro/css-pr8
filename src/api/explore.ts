@@ -1,4 +1,4 @@
-import {Session, ISessionInfo} from "@inrupt/solid-client-authn-browser";
+import {Session} from "@inrupt/solid-client-authn-browser";
 const SolidFileClient = require("solid-file-client");
 
 export const getRootFolder = (provider: string) => {
@@ -13,8 +13,6 @@ export const getFolder = async (folderUrl: string, session: Session) => {
     const fc = new SolidFileClient(session);
 
     let folderContent = await fc.readFolder(folderUrl);
-
-    console.log(folderContent)
 
     const { name, parent, type, modified, size } = folderContent;
 
@@ -44,3 +42,37 @@ export const createFolder = async (folderUrl: string, session: Session) => {
 
     await fc.createFolder(folderUrl);
 }
+
+const buildFileUrl = (path: string, fileName: string) => {
+    return `${path.concat(fileName)}`;
+};
+
+export const uploadFile = async (folder: string, filename: string, contentType: string, content: string, session: Session) => {
+
+    const fc = new SolidFileClient(session);
+
+    const url = buildFileUrl(folder, filename)
+
+    const type = filename.endsWith('.ttl') || filename === "card#me"
+        ? 'text/turtle'
+        : contentType;
+
+    return await fc.putFile(url, content, type || "text/plain");
+};
+
+export const createFile = async (folder: string, filename: string, session: Session) => {
+    const fc = new SolidFileClient(session);
+
+    return await fc.createFile(folder+filename, '', filename.endsWith(".ttl") ? "text/turtle" : 'text/plain');
+}
+
+export const removeFile = async (uri: string, session: Session) => {
+    const fc = new SolidFileClient(session);
+
+    try {
+        await fc.delete(uri);
+        return {};
+    } catch (e) {
+
+    }
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import {Session, ISessionInfo} from "@inrupt/solid-client-authn-browser";
+import {Session} from "@inrupt/solid-client-authn-browser";
 import Explore from "./Explore"
 
 interface IChatProps {

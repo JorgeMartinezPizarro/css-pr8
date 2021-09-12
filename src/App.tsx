@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {Session, ISessionInfo} from "@inrupt/solid-client-authn-browser";
+import {Session} from "@inrupt/solid-client-authn-browser";
 import Chat from "./components/Chat"
 
 const session: Session = new Session();
