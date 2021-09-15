@@ -7,7 +7,6 @@ export const getRootFolder = (provider: string) => {
 
 }
 
-
 export const getFolder = async (folderUrl: string, session: Session) => {
 
     const fc = new SolidFileClient(session);
@@ -76,3 +75,24 @@ export const removeFile = async (uri: string, session: Session) => {
 
     }
 };
+
+export const addFriend = async (uri: string, session: Session) => {
+
+    const root = getRootFolder(session.info.webId || "")
+
+    const query = `
+    
+   INSERT DATA {
+        <${session.info.webId}> <http://xmlns.com/foaf/0.1/knows> <${uri}> .
+   }
+    `;
+
+    await session.fetch(root + 'pr8/friends.ttl', {
+        method: 'PATCH',
+        body: query,
+        headers: {
+            'Content-Type': 'application/sparql-update'
+        }
+    });
+}
+

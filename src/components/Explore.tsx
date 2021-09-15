@@ -112,7 +112,16 @@ export default (props: IExploreProps) => {
                     </li>
                 }
                 else {
-                    return <li>{element.url}</li>
+                    return <li>
+                        <span>{element.url}</span>
+                        <button onClick={async () => {
+                            await removeFile(element.url, props.session);
+                            //@ts-ignore
+                            getFolder(currentFolder.folderUrl, props.session).then(folder => {
+                                setCurrentFolder(folder)
+                            })
+                        }}>RM</button>
+                    </li>
                 }
             })
         }</ul>
